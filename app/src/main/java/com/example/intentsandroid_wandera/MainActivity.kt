@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
@@ -38,11 +39,23 @@ class MainActivity : AppCompatActivity() {
             val emailIntent = Intent(Intent.ACTION_SENDTO,Uri.fromParts("mailto","wanderastecy64@gmail.com"))
             emailIntent.putExtra(Intent.EXTRA_SUBJECT,"JOB APPLICATION")
             emailIntent.putExtra(Intent.EXTRA_TEXT,"Dear Madam.......")
-            startActivity()
+            startActivity(Intent.createChooser(emailIntent,"send email"))
         }
 
         camera.setOnClickListener {
-
+        val takePictureintent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(takePictureintent,1)
+        }
+        share.setOnClickListener {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_TEXT,"Hey, download this app from https://www....")
+            startActivity(shareIntent)
+        }
+        mpesa.setOnClickListener {
+            val simToolKitIntent = applicationContext.packageManager.getLaunchIntentForPackage("com.android.stk")
+            simToolKitIntent?.let { startActivity(it) }
         }
 
 
